@@ -1,8 +1,13 @@
-const socketHandler = async (socket) => {
+const socketHandler = async (socket, io) => {
   console.log(`User connected ${socket.id}`);
 
     socket.on('move', (data) => {
-        console.log(socket.userId);
+        console.log(data);
+
+        // validate the move
+        // update the match
+
+        io.emit(data.matchId, data.move);
     })
 
 }

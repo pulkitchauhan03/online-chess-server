@@ -26,7 +26,13 @@ const authCheckSocket = async (socket, next) => {
 
         next();
     } catch (error) {
-        res.status(401).json('Unauthorized')
+        console.log(error.message);
+
+        // NOT TESTED
+
+        let err  = new Error('Authentication error');
+        err.data = { type : 'authentication_error' };
+        next(err);
     }
 }
 

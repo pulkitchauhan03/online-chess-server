@@ -42,7 +42,9 @@ app.use(`/api/auth`, authRoute);
 app.use(`/api/match`, authCheck, matchRoute);
 
 io.use(authCheckSocket);
-io.on('connection', socketHandler);
+io.on('connection', async (socket) => {
+  await socketHandler(socket, io);
+});
 
 server.listen(port, () => {authCheckSocket
   console.log(`server started on port ${port}`);
