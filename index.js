@@ -18,7 +18,9 @@ const morgan = require('morgan');
 const cors = require('cors');
 
 const authRoute = require('./routes/auth')(io);
-const { authCheck } = require('./middlewares/auth');
+const matchRoute = require('./routes/match')(io);
+const { authCheck, authCheckSocket } = require('./middlewares/auth');
+const { socketHandler } = require('./socketControllers/match');
 const User = require('./models/User');
 
 // Connect to MongoDB
@@ -37,11 +39,11 @@ app.use(helmet());
 app.use(morgan("common"));
 
 app.use(`/api/auth`, authRoute);
+app.use(`/api/match`, authCheck, matchRoute);
 
-io.on('connection', (socket) => {
-  console.log(`User connected ${socket.id}`);
-});
+io.use(authCheckSocket);
+io.on('connection', socketHandler);
 
-server.listen(port, () => {
+server.listen(port, () => {authCheckSocket
   console.log(`server started on port ${port}`);
 });
