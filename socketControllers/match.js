@@ -10,6 +10,11 @@ const socketHandler = async (socket, io) => {
         io.emit(data.matchId, data.move);
     })
 
+    socket.on("join", (matchId) => {
+        console.log(`${socket.userId} User joined ${matchId}`);
+        socket.join(matchId);
+    })
+
 }
 
 module.exports = { socketHandler };

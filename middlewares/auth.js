@@ -17,8 +17,8 @@ const authCheck = async (req, res, next) => {
 const authCheckSocket = async (socket, next) => {
     try {
         // FOR TESTING WITH POSTMAN ONLY
-        const token = socket.handshake.headers.token;
-        // const token = socket.handshake.auth.token;
+        // const token = socket.handshake.headers.token;
+        const token = socket.handshake.auth.token;
 
         let decodedData;
         decodedData = jwt.verify(token, process.env.JWT_KEY);

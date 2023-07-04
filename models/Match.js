@@ -8,7 +8,7 @@ const Match = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['waiting', 'playing', 'finished'],
+        enum: ['waiting', 'in-progress', 'paused', 'finished'],
         default: 'waiting',
         required: true
     },
