@@ -6,14 +6,19 @@ const socketHandler = async (socket, io) => {
 
         // validate the move
         // update the match
+        console.log(socket.rooms);
 
-        io.emit(data.matchId, data.move);
+        socket.to(data.matchId).emit("move", data.move);
     })
 
     socket.on("join", (matchId) => {
         console.log(`${socket.userId} User joined ${matchId}`);
         socket.join(matchId);
     })
+
+    socket.on("disconnect", () => {
+        console.log(`User disconnected ${socket.id}`);
+    });
 
 }
 

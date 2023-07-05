@@ -35,7 +35,13 @@ function matchRoute(io) {
             const user = await User.findById(req.userId);
             const match = await Match.findById(req.params.matchId);
 
-            if (match.status !== 'waiting' || match.challenger !== 'paused') {
+            if(match === null) {
+                return res.status(400).json({
+                    message: 'Match not found'
+                });
+            }
+
+            if (match.status !== 'waiting' && match.challenger !== 'paused') {
                 return res.status(400).json({
                     message: 'Match is not waiting for players'
                 });
@@ -43,7 +49,7 @@ function matchRoute(io) {
             else if (match.status === 'waiting') {
                 if(!match.owner.equals(user._id)) {
                     match.challenger = user._id;
-                    match.status = 'playing';
+                    match.status = 'in-progress';
                     
                     await match.save();
                     
@@ -61,7 +67,7 @@ function matchRoute(io) {
                 }
             } else {
                 if(match.owner.equals(user._id) || match.challenger.equals(user._id)) {
-                    match.status = 'playing';
+                    match.status = 'in-progress';
                     
                     await match.save();
                     
