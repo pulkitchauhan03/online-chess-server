@@ -1,6 +1,8 @@
 const socketHandler = async (socket, io) => {
   console.log(`User connected ${socket.id}`);
 
+    
+
     socket.on('move', (data) => {
         console.log(data);
 
@@ -8,7 +10,7 @@ const socketHandler = async (socket, io) => {
         // update the match
         console.log(socket.rooms);
 
-        socket.to(data.matchId).emit("move", data.move);
+        io.to(data.matchId).emit("move", data.move);
     })
 
     socket.on("join", (matchId) => {
